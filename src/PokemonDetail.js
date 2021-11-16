@@ -41,6 +41,10 @@ class PokemonDetail extends Component {
         const { name, pokemon_details } = this.state;
         console.log(pokemon_details)
 
+        const a = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+ pokemon_details.id+'.png';
+        console.log(a)
+        
+
         function catchPokemon() {
             if (Math.random() >= 0.5) {
                 return prompt("You caught " + name + ". Please Enter A Nickname For This Pokemon");
@@ -63,7 +67,7 @@ class PokemonDetail extends Component {
                       <CardText>
                         <Row>
                           <Col>
-                          <CardImg draggable="false" top src={pokemon_details.sprites}  className="h-100 p-4" />
+                          <CardImg draggable="false" top src={a}  className="h-100 p-4" />
                           </Col>
 
                           <Col className="col-md-5 mx-auto">

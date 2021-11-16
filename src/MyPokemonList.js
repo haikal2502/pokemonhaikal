@@ -15,6 +15,35 @@ import {
 } from "reactstrap";
 
 class MyPokemon extends Component {
+
+    getMorePokemon() {
+        fetch("https://pokeapi.co/api/v2/")
+            .then(res => res.json())
+            .then(parsedJSON => parsedJSON.results.map(data => (
+                {
+                    name: `${data.name}`,
+                    url: `${data.url}`,
+                    
+
+                }
+            )))
+            .then(pokemon => this.setState({ pokemon },()=>{
+                    this.state.pokemon.map(detail => {
+                    fetch(detail.url)
+                    .then(response => response.json())
+                    .then(data => {
+                    if (data) {
+                        var temp = this.state.pokemonDetails
+                        temp.push(data)
+                        this.setState({pokemonDetails: temp})
+                    }            
+                    })
+                    .catch(console.log)
+                })
+                        
+            }))
+            .catch(error => console.log('parsing failed', error))
+      }
     render() {
         return (
             <PokemonConsumer>
