@@ -19,11 +19,20 @@ class PokemonList extends Component {
         this.state = {
             pokemon: [],
             pokemonDetails : [],
+            offset: 0,
+            loadNumber: 24    
         };
+        this.handleMoreClick = this.handleMoreClick.bind(this);
     }
+    
 
     componentDidMount() {
-        fetch("https://pokeapi.co/api/v2/pokemon?limit=500")
+        this.getMorePokemon();
+    }
+
+
+    getMorePokemon() {
+        fetch("https://pokeapi.co/api/v2/pokemon?offset=" + this.state.offset + "&limit=" + this.state.loadNumber)
             .then(res => res.json())
             .then(parsedJSON => parsedJSON.results.map(data => (
                 {
@@ -49,7 +58,19 @@ class PokemonList extends Component {
                         
             }))
             .catch(error => console.log('parsing failed', error))
-    }
+      }
+
+    getNextOffset() {
+        return this.state.offset+this.state.loadNumber;
+      }
+    
+      handleMoreClick(event) {
+        const newOffset = this.getNextOffset();
+        this.setState({offset: newOffset}, () => {
+          console.log("Offset: " + this.state.offset)
+          this.getMorePokemon();
+        });    
+      }
 
     render() {
         const { pokemonDetails } = this.state;
@@ -58,7 +79,7 @@ class PokemonList extends Component {
                 <Container className="pokemonList">
                     <Row>
                         <Col sm={{ size: 8, offset: 2 }} md={{ size: 6, offset: 3 }} lg={{ size: 4, offset: 4 }}>
-                            <h1 className="display-4 text-light text-center">Pokemon List</h1>
+                            <h1 className="display-43 text-light text-center">Pokemon List</h1>
                         </Col>
                     </Row>
                     <Row className="my-5">
@@ -82,10 +103,15 @@ class PokemonList extends Component {
                                                 </NavLink>
                                             </CardFooter>
                                         </Card>
+                                        
                                     </Col>
+                                    
                                 );
                             }) : null
                         }
+                         <button type="button" className="btn btn-secondary btn-block" key="more-button" id="more-button" onClick={this.handleMoreClick}>Load More</button>
+                        
+                        
                     </Row>
                 </Container>
             </Container>
