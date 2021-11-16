@@ -204,7 +204,7 @@ class PokemonDetail extends Component {
                                   let nickname = catchPokemon();
                                   if (nickname) {
                                     updatepokemon([
-                                      { name: name, nickname: nickname},
+                                      { name: name, nickname: nickname,image:a},
                                     ]);
                                     alert(
                                       "Pokemon Successfully Added to My Pokemon List"

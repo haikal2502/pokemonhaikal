@@ -60,13 +60,13 @@ class MyPokemon extends Component {
                                 <Row className="my-5">
                                     {
                                         pokemon.length > 0 ? pokemon.map(item => {
-                                            const { name, nickname } = item;
+                                            const { name, nickname,image } = item;
                                             console.log(item)
 
                                             return (
                                                 <Col xs={{ size: 6 }} sm={{ size: 4 }} lg={{ size: 3 }} xl={{ size: 2 }} className="myPokemon mb-4" key={Math.random()}>
                                                     <Card className="h-100">
-                                                        <CardImg draggable="false" top src={"pokemon/" + name + ".jpg"} title={"Pokemon - " + name + " - " + process.env.REACT_APP_TITLE} alt={"Pokemon - " + name + " - " + process.env.REACT_APP_TITLE} className="h-100 p-4" />
+                                                    <CardImg draggable="false" top src={item.image}  className="h-100 p-4" />
                                                         <CardBody>
                                                             <CardTitle className="text-capitalize text-center" tag="h4">{nickname}</CardTitle>
                                                             <CardSubtitle tag="h6" className="text-capitalize text-center">{name}</CardSubtitle>
