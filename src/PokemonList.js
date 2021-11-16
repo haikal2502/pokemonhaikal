@@ -17,28 +17,42 @@ class PokemonList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pokemon: []
+            pokemon: [],
+            pokemonDetails : [],
         };
     }
 
     componentDidMount() {
-        fetch("https://pokeapi.co/api/v2/pokemon?offset=20&limit=10")
+        fetch("https://pokeapi.co/api/v2/pokemon?limit=500")
             .then(res => res.json())
             .then(parsedJSON => parsedJSON.results.map(data => (
                 {
                     name: `${data.name}`,
                     url: `${data.url}`,
-                    thumbnail: `${data.name}.jpg`
+                    
 
                 }
             )))
-            .then(pokemon => this.setState({ pokemon }))
+            .then(pokemon => this.setState({ pokemon },()=>{
+                    this.state.pokemon.map(detail => {
+                    fetch(detail.url)
+                    .then(response => response.json())
+                    .then(data => {
+                    if (data) {
+                        var temp = this.state.pokemonDetails
+                        temp.push(data)
+                        this.setState({pokemonDetails: temp})
+                    }            
+                    })
+                    .catch(console.log)
+                })
+                        
+            }))
             .catch(error => console.log('parsing failed', error))
     }
 
     render() {
-        const { pokemon } = this.state;
-        console.log(pokemon)
+        const { pokemonDetails } = this.state;
         return (
             <Container fluid={true} className="py-5">
                 <Container className="pokemonList">
@@ -49,18 +63,21 @@ class PokemonList extends Component {
                     </Row>
                     <Row className="my-5">
                         {
-                            pokemon.length > 0 ? pokemon.map(item => {
-                                const { name, thumbnail } = item;
+                            pokemonDetails.length > 0 ? pokemonDetails.map(item => {
+                                const { name } = item;
                                 let urlDetail = "/detail/" + name;
                                 return (
                                     <Col xs={{ size: 6 }} sm={{ size: 4 }} lg={{ size: 3 }} xl={{ size: 2 }} className="mb-4">
                                         <Card className="h-100">
-                                            <CardImg draggable="false" top src={"pokemon/" + thumbnail} title={"Pokemon - " + name + " - " + process.env.REACT_APP_TITLE} alt={"Pokemon - " + name + " - " + process.env.REACT_APP_TITLE} className="h-100 p-4" />
+                                            <CardImg draggable="false" top src={item.sprites['front_default']}  className="h-100 p-4" />
+                                            <CardBody>
+                                                
+                                            </CardBody>
                                             <CardBody>
                                                 <CardTitle className="text-capitalize text-center" tag="h4">{name}</CardTitle>
                                             </CardBody>
                                             <CardFooter>
-                                                <NavLink key={name} to={urlDetail}>
+                                                <NavLink  to={urlDetail}>
                                                     <Button outline className="w-100" color="primary">View</Button>
                                                 </NavLink>
                                             </CardFooter>
