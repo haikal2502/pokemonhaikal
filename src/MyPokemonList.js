@@ -32,6 +32,7 @@ class MyPokemon extends Component {
                                     {
                                         pokemon.length > 0 ? pokemon.map(item => {
                                             const { name, nickname } = item;
+                                            console.log(item)
 
                                             return (
                                                 <Col xs={{ size: 6 }} sm={{ size: 4 }} lg={{ size: 3 }} xl={{ size: 2 }} className="myPokemon mb-4" key={Math.random()}>
